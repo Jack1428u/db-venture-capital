@@ -1,4 +1,28 @@
 use("venture_capital");
+const startupId1 = new ObjectId();
+const startupId2 = new ObjectId();
+
+const adminId1 = new ObjectId();
+
+const founderId1 = new ObjectId();
+const founderId2 = new ObjectId();
+
+const campaignId1 = new ObjectId();
+const campaignId2 = new ObjectId();
+
+const investorId1 = new ObjectId();
+const investorId2 = new ObjectId();
+const investorId3 = new ObjectId();
+
+const walletId1 = new ObjectId();
+const walletId2 = new ObjectId();
+const walletId3 = new ObjectId();
+
+const shareId1 = new ObjectId();
+const shareId2 = new ObjectId();
+
+
+
 
 db.startups.insertMany([
     {
