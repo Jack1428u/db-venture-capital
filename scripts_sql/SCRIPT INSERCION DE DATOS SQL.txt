@@ -1,0 +1,120 @@
+ INSERT INTO Admins (email, password, full_name, role_level, is_active, created_at)
+VALUES
+  ('ana.gutierrez@novaseed.pe', 'hashed_001', 'Ana Gutiérrez',   'superadmin', 1, '2025-01-01'),
+  ('luis.torres@novaseed.pe',   'hashed_002', 'Luis Torres Vega', 'admin',      1, '2025-03-15')
+GO
+ 
+INSERT INTO Founders (email, password, full_name, phone, country, linkedin_url, is_verified, is_active, created_at)
+VALUES
+  ('carlos.mendoza@startup.pe', 'hashed_003', 'Carlos Mendoza Ríos',    '+51987654321', 'Peru', 'linkedin.com/in/carlos-mendoza', 1, 1, '2025-06-01'),
+  ('valeria.torres@market.pe',  'hashed_004', 'Valeria Torres Guzmán',  '+51976543210', 'Peru', 'linkedin.com/in/valeria-torres', 1, 1, '2024-09-10')
+GO
+ 
+INSERT INTO Investors (email, password, full_name, phone, country, investor_type, is_verified, is_active)
+VALUES
+  ('marco.delgado@invest.pe', 'hashed_005', 'Marco Delgado Fuentes', '+51965432109', 'Peru', 'angel',  1, 1),
+  ('sofia.quispe@capital.pe', 'hashed_006', 'Sofía Quispe Vargas',   '+51954321098', 'Peru', 'retail', 1, 1),
+  ('luis.paredes@angel.pe',   'hashed_007', 'Luis Paredes Castro',   '+51943210987', 'Peru', 'retail', 0, 1)
+GO
+ 
+INSERT INTO Startups (name, description, industry, website_url, founding_year, total_valuation, status, created_at, admin_id)
+VALUES
+  ('EduCloud SaaS', 'Plataforma SaaS de gestión educativa para instituciones peruanas.', 'EdTech', 'https://educloud.pe',  2025, 500000.00, 'active', '2025-09-01', 1),
+  ('MarketB2B',     'Marketplace B2B de conexión entre proveedores y empresas.',         'B2B',    'https://marketb2b.pe', 2024, 350000.00, 'active', '2024-11-15', 1)
+GO
+ 
+INSERT INTO Startup_founders (startup_id, founder_id, founder_role, equity_share_pct, joined_at)
+VALUES
+  (1, 1, 'CEO', 60.00, '2025-09-01'),
+  (2, 2, 'CTO', 55.00, '2024-11-15')
+GO
+ 
+INSERT INTO Tags (tag_name, category)
+VALUES
+  ('EdTech',      'Industria'),
+  ('SaaS',        'Tecnología'),
+  ('B2B',         'Modelo'),
+  ('Marketplace', 'Industria')
+GO
+ 
+INSERT INTO FundingCampaigns (title, funding_goal, amount_raised, equity_offered, start_date, end_date, min_investment, status, dividend_share, startup_id)
+VALUES
+  ('EduCloud — Ronda Semilla', 100000.00, 45000.00, 15.00, '2026-01-15', '2026-06-15', 500.00,  'active', 30.00, 1),
+  ('MarketB2B — Serie A',      200000.00, 120000.00, 20.00, '2026-02-01', '2026-07-01', 1000.00, 'active', 25.00, 2)
+GO
+ 
+INSERT INTO Campaign_Tag (campaign_id, tag_id, added_at)
+VALUES
+  (1, 1, '2026-01-15'),
+  (1, 2, '2026-01-15'),
+  (2, 3, '2026-02-01'),
+  (2, 4, '2026-02-01')
+GO
+ 
+INSERT INTO Shares (price_per_share, total_quantity, available_quantity, equity_per_share, created_at, campaign_id)
+VALUES
+  (50.00,  2000, 1100, 0.0075, '2026-01-15', 1),
+  (100.00, 2000,  800, 0.0100, '2026-02-01', 2)
+GO
+ 
+INSERT INTO Wallets (balance_usd, total_deposited, total_withdrawn, total_dividends, last_updated, owner_type, owner_id)
+VALUES
+  (4447.50, 5000.00,     0.00, 52.50, '2026-04-10', 'investor', 1),
+  (17980.00, 20000.00,   0.00,  0.00, '2026-02-15', 'investor', 2),
+  (8000.00,  8000.00,    0.00,  0.00, '2026-03-01', 'investor', 3)
+GO
+ 
+INSERT INTO PaymentMethods (method_type, provider, account_identifier, currency, owner_type, owner_id)
+VALUES
+  ('bank_transfer', 'BCP',       '19120345678901', 'USD', 'investor', 1),
+  ('card',          'Visa',      '4111111111111111','USD', 'investor', 2),
+  ('bank_transfer', 'Interbank', '20098765432109', 'USD', 'investor', 3)
+GO
+ 
+INSERT INTO Transactions (shares_bought, amount_usd, commission, status, transaction_date, notes, campaign_id, share_id, method_id, investor_id)
+VALUES
+  (10, 500.00,  5.00,  'completed', '2026-01-25', 'Primera compra EduCloud', 1, 1, 1, 1),
+  ( 5, 250.00,  2.50,  'completed', '2026-02-10', 'Compra parcial EduCloud',  1, 1, 2, 2),
+  (20, 2000.00, 20.00, 'completed', '2026-02-15', 'Compra MarketB2B',         2, 2, 2, 2),
+  (30, 3000.00, 30.00, 'completed', '2026-03-01', 'Inversión MarketB2B',      2, 2, 3, 3)
+GO
+ 
+INSERT INTO Campaign_Investor (campaign_id, investor_id, saved_at, notes)
+VALUES
+  (1, 1, '2026-01-20', 'Interesado en el sector EdTech.'),
+  (1, 2, '2026-02-10', NULL),
+  (2, 2, '2026-02-05', 'Evaluar ticket de USD 5000.'),
+  (2, 3, '2026-02-28', NULL)
+GO
+ 
+INSERT INTO Milestones (title, description, target_date, completed_date, status, evidence_url, category, startup_id)
+VALUES
+  ('MVP lanzado en producción',            'Versión funcional disponible para usuarios piloto.', '2026-03-01', '2026-03-15', 'completed', 'https://educloud.pe/mvp',    'product', 1),
+  ('Alcanzar 100 instituciones registradas','Meta de adopción temprana del producto.',            '2026-06-30', NULL,         'in_progress',NULL,                         'revenue',  1),
+  ('Integración con API de proveedores',   'Conectar con los 10 principales proveedores.',       '2026-07-15', NULL,         'pending',     NULL,                         'tech',     2)
+GO
+ 
+INSERT INTO RevenueReports (report_month, report_year, gross_revenue, operating_costs, net_revenue, evidence_url, verification_status, submitted_at, startup_id, admin_id)
+VALUES
+  (2, 2026, 14000.00, 7500.00,  6500.00, 'https://educloud.pe/rep/feb2026.pdf', 'verified', '2026-03-05', 1, 1),
+  (3, 2026, 15000.00, 8000.00,  7000.00, 'https://educloud.pe/rep/mar2026.pdf', 'verified', '2026-04-05', 1, 1),
+  (4, 2026, 22000.00, 12000.00,10000.00, 'https://marketb2b.pe/rep/abr2026.pdf','verified', '2026-05-02', 2, 1)
+GO
+ 
+INSERT INTO DividendPayouts (investor_equity_pct, dividend_pool_usd, amount_due_usd, status, paid_at, report_id, wallet_id)
+VALUES
+  (7.50, 1950.00, 52.50, 'paid', '2026-04-10', 2, 1)
+GO
+ 
+INSERT INTO StartupScores (revenue_score, milestone_score, investor_rating, overall_score, startup_id)
+VALUES
+  (7.50, 9.00, 4.50, 7.80, 1),
+  (8.20, 5.00, 4.00, 6.90, 2)
+GO
+ 
+INSERT INTO InvestorReviews (rating, review_text, is_public, created_at, startup_id, investor_id)
+VALUES
+  (5, 'Equipo sólido, producto con alta demanda en el sector educativo.', 1, '2026-04-20', 1, 1),
+  (4, 'Buen modelo de negocio, esperando ver tracción en más regiones.',  1, '2026-04-22', 1, 2),
+  (4, 'Gran potencial en el mercado B2B latinoamericano.',                1, '2026-05-10', 2, 2)
+GO

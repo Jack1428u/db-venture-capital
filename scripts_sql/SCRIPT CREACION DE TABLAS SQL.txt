@@ -1,0 +1,359 @@
+create database venture_capital2
+go
+use venture_capital2
+GO
+CREATE TABLE Admins
+(
+  admin_id   int         NOT NULL IDENTITY(1,1),
+  email      varchar(50) NOT NULL,
+  password   varchar(50) NOT NULL,
+  full_name  varchar(50) NOT NULL,
+  role_level varchar(50),
+  is_active  bit,
+  created_at datetime,
+  CONSTRAINT PK_Admins PRIMARY KEY (admin_id),
+  CONSTRAINT UQ_Admins_email UNIQUE (email)
+)
+GO
+
+CREATE TABLE Founders
+(
+  founder_id   int         NOT NULL IDENTITY(1,1),
+  email        varchar(50) NOT NULL,
+  password     varchar(50) NOT NULL,
+  full_name    varchar(50) NOT NULL,
+  phone        varchar(50) NOT NULL,
+  country      varchar(50) NOT NULL,
+  linkedin_url varchar(50),
+  is_verified  bit,
+  is_active    bit,
+  created_at   datetime,
+  CONSTRAINT PK_Founders PRIMARY KEY (founder_id),
+  CONSTRAINT UQ_Founders_email UNIQUE (email),
+  CONSTRAINT UQ_Founders_phone UNIQUE (phone)
+)
+GO
+
+CREATE TABLE Investors
+(
+  investor_id   int         NOT NULL IDENTITY(1,1),
+  email         varchar(50) NOT NULL,
+  password      varchar(50) NOT NULL,
+  full_name     varchar(50) NOT NULL,
+  phone         varchar(50) NOT NULL,
+  country       varchar(50) NOT NULL,
+  investor_type varchar(50),
+  is_verified   bit,
+  is_active     bit,
+  CONSTRAINT PK_Investors PRIMARY KEY (investor_id),
+  CONSTRAINT UQ_Investors_email UNIQUE (email),
+  CONSTRAINT UQ_Investors_phone UNIQUE (phone)
+)
+GO
+
+CREATE TABLE Startups
+(
+  startup_id      int           NOT NULL IDENTITY(1,1),
+  name            varchar(50)   NOT NULL,
+  description     text          NOT NULL,
+  industry        varchar(50)   NOT NULL,
+  website_url     varchar(50),
+  founding_year   smallint,
+  total_valuation decimal(10,2) NOT NULL,
+  status          varchar(50)   NOT NULL,
+  created_at      datetime,
+  admin_id        int           NOT NULL,
+  CONSTRAINT PK_Startups PRIMARY KEY (startup_id),
+  CONSTRAINT UQ_Startups_name UNIQUE (name)
+)
+GO
+
+CREATE TABLE FundingCampaigns
+(
+  campaign_id    int           NOT NULL IDENTITY(1,1),
+  title          varchar(50)   NOT NULL,
+  funding_goal   decimal(10,2) NOT NULL,
+  amount_raised  decimal(10,2) NOT NULL,
+  equity_offered decimal(10,2) NOT NULL,
+  start_date     datetime      NOT NULL,
+  end_date       datetime      NOT NULL,
+  min_investment decimal(10,2) NOT NULL,
+  status         varchar(50)   NOT NULL,
+  dividend_share decimal(10,2) NOT NULL,
+  startup_id     int           NOT NULL,
+  CONSTRAINT PK_FundingCampaigns PRIMARY KEY (campaign_id)
+)
+GO
+
+CREATE TABLE Shares
+(
+  share_id           int           NOT NULL IDENTITY(1,1),
+  price_per_share    decimal(10,2) NOT NULL,
+  total_quantity     int           NOT NULL,
+  available_quantity int           NOT NULL,
+  equity_per_share   decimal(10,2) NOT NULL,
+  created_at         datetime,
+  campaign_id        int           NOT NULL,
+  CONSTRAINT PK_Shares PRIMARY KEY (share_id)
+)
+GO
+
+CREATE TABLE Tags
+(
+  tag_id   int         NOT NULL IDENTITY(1,1),
+  tag_name varchar(50) NOT NULL,
+  category varchar(50),
+  CONSTRAINT PK_Tags PRIMARY KEY (tag_id)
+)
+GO
+
+CREATE TABLE Milestones
+(
+  milestone_id   int         NOT NULL IDENTITY(1,1),
+  title          varchar(50) NOT NULL,
+  description    text,
+  target_date    datetime,
+  completed_date datetime,
+  status         varchar(50) NOT NULL,
+  evidence_url   varchar(50),
+  category       varchar(50),
+  startup_id     int         NOT NULL,
+  CONSTRAINT PK_Milestones PRIMARY KEY (milestone_id)
+)
+GO
+
+CREATE TABLE RevenueReports
+(
+  report_id           int           NOT NULL IDENTITY(1,1),
+  report_month        tinyint       NOT NULL,
+  report_year         smallint      NOT NULL,
+  gross_revenue       decimal(10,2) NOT NULL,
+  operating_costs     decimal(10,2) NOT NULL,
+  net_revenue         decimal(10,2) NOT NULL,
+  evidence_url        varchar(50),
+  verification_status varchar(50)   NOT NULL,
+  submitted_at        datetime,
+  startup_id          int           NOT NULL,
+  admin_id            int,
+  CONSTRAINT PK_RevenueReports PRIMARY KEY (report_id)
+)
+GO
+
+CREATE TABLE StartupScores
+(
+  score_id        int           NOT NULL IDENTITY(1,1),
+  revenue_score   decimal(10,2),
+  milestone_score decimal(10,2),
+  investor_rating decimal(10,2),
+  overall_score   decimal(10,2),
+  startup_id      int           NOT NULL,
+  CONSTRAINT PK_StartupScores PRIMARY KEY (score_id)
+)
+GO
+
+CREATE TABLE InvestorReviews
+(
+  review_id   int      NOT NULL IDENTITY(1,1),
+  rating      tinyint  NOT NULL,
+  review_text text,
+  is_public   bit,
+  created_at  datetime,
+  startup_id  int      NOT NULL,
+  investor_id int      NOT NULL,
+  CONSTRAINT PK_InvestorReviews PRIMARY KEY (review_id)
+)
+GO
+
+CREATE TABLE Wallets
+(
+  wallet_id       int           NOT NULL IDENTITY(1,1),
+  balance_usd     decimal(10,2) NOT NULL,
+  total_deposited decimal(10,2) NOT NULL,
+  total_withdrawn decimal(10,2) NOT NULL,
+  total_dividends decimal(10,2) NOT NULL,
+  last_updated    datetime,
+  owner_type      varchar(20)   NOT NULL,
+  owner_id        int           NOT NULL,
+  CONSTRAINT PK_Wallets PRIMARY KEY (wallet_id)
+)
+GO
+
+CREATE TABLE PaymentMethods
+(
+  method_id          int         NOT NULL IDENTITY(1,1),
+  method_type        varchar(50) NOT NULL,
+  provider           varchar(50),
+  account_identifier varchar(50),
+  currency           varchar(50) NOT NULL,
+  owner_type         varchar(20) NOT NULL,
+  owner_id           int         NOT NULL,
+  CONSTRAINT PK_PaymentMethods PRIMARY KEY (method_id)
+)
+GO
+
+CREATE TABLE DividendPayouts
+(
+  payout_id           int           NOT NULL IDENTITY(1,1),
+  investor_equity_pct decimal(10,2) NOT NULL,
+  dividend_pool_usd   decimal(10,2) NOT NULL,
+  amount_due_usd      decimal(10,2) NOT NULL,
+  status              varchar(50)   NOT NULL,
+  paid_at             datetime,
+  report_id           int           NOT NULL,
+  wallet_id           int           NOT NULL,
+  CONSTRAINT PK_DividendPayouts PRIMARY KEY (payout_id),
+  CONSTRAINT UQ_DividendPayouts_pool UNIQUE (dividend_pool_usd)
+)
+GO
+
+CREATE TABLE Transactions
+(
+  transaction_id   int           NOT NULL IDENTITY(1,1),
+  shares_bought    int           NOT NULL,
+  amount_usd       decimal(10,2) NOT NULL,
+  commission       decimal(10,2) NOT NULL,
+  status           varchar(50)   NOT NULL,
+  transaction_date datetime      NOT NULL,
+  notes            varchar(50),
+  campaign_id      int           NOT NULL,
+  share_id         int           NOT NULL,
+  method_id        int           NOT NULL,
+  investor_id      int           NOT NULL,
+  CONSTRAINT PK_Transactions PRIMARY KEY (transaction_id)
+)
+GO
+
+CREATE TABLE Startup_founders
+(
+  startup_id       int           NOT NULL,
+  founder_id       int           NOT NULL,
+  founder_role     varchar(50),
+  equity_share_pct decimal(10,2),
+  joined_at        datetime,
+  CONSTRAINT PK_Startup_founders PRIMARY KEY (startup_id, founder_id)
+)
+GO
+
+CREATE TABLE Campaign_Investor
+(
+  campaign_id int      NOT NULL,
+  investor_id int      NOT NULL,
+  saved_at    datetime,
+  notes       text,
+  CONSTRAINT PK_Campaign_Investor PRIMARY KEY (campaign_id, investor_id)
+)
+GO
+
+CREATE TABLE Campaign_Tag
+(
+  campaign_id int      NOT NULL,
+  tag_id      int      NOT NULL,
+  added_at    datetime,
+  CONSTRAINT PK_Campaign_Tag PRIMARY KEY (campaign_id, tag_id)
+)
+GO
+
+ALTER TABLE Startups
+  ADD CONSTRAINT FK_Admins_TO_Startups
+    FOREIGN KEY (admin_id) REFERENCES Admins (admin_id)
+GO
+
+ALTER TABLE FundingCampaigns
+  ADD CONSTRAINT FK_Startups_TO_FundingCampaigns
+    FOREIGN KEY (startup_id) REFERENCES Startups (startup_id)
+GO
+
+ALTER TABLE Shares
+  ADD CONSTRAINT FK_FundingCampaigns_TO_Shares
+    FOREIGN KEY (campaign_id) REFERENCES FundingCampaigns (campaign_id)
+GO
+
+ALTER TABLE Milestones
+  ADD CONSTRAINT FK_Startups_TO_Milestones
+    FOREIGN KEY (startup_id) REFERENCES Startups (startup_id)
+GO
+
+ALTER TABLE RevenueReports
+  ADD CONSTRAINT FK_Startups_TO_RevenueReports
+    FOREIGN KEY (startup_id) REFERENCES Startups (startup_id)
+GO
+
+ALTER TABLE RevenueReports
+  ADD CONSTRAINT FK_Admins_TO_RevenueReports
+    FOREIGN KEY (admin_id) REFERENCES Admins (admin_id)
+GO
+
+ALTER TABLE StartupScores
+  ADD CONSTRAINT FK_Startups_TO_StartupScores
+    FOREIGN KEY (startup_id) REFERENCES Startups (startup_id)
+GO
+
+ALTER TABLE InvestorReviews
+  ADD CONSTRAINT FK_Startups_TO_InvestorReviews
+    FOREIGN KEY (startup_id) REFERENCES Startups (startup_id)
+GO
+
+ALTER TABLE InvestorReviews
+  ADD CONSTRAINT FK_Investors_TO_InvestorReviews
+    FOREIGN KEY (investor_id) REFERENCES Investors (investor_id)
+GO
+
+ALTER TABLE DividendPayouts
+  ADD CONSTRAINT FK_RevenueReports_TO_DividendPayouts
+    FOREIGN KEY (report_id) REFERENCES RevenueReports (report_id)
+GO
+
+ALTER TABLE DividendPayouts
+  ADD CONSTRAINT FK_Wallets_TO_DividendPayouts
+    FOREIGN KEY (wallet_id) REFERENCES Wallets (wallet_id)
+GO
+
+ALTER TABLE Transactions
+  ADD CONSTRAINT FK_FundingCampaigns_TO_Transactions
+    FOREIGN KEY (campaign_id) REFERENCES FundingCampaigns (campaign_id)
+GO
+
+ALTER TABLE Transactions
+  ADD CONSTRAINT FK_Shares_TO_Transactions
+    FOREIGN KEY (share_id) REFERENCES Shares (share_id)
+GO
+
+ALTER TABLE Transactions
+  ADD CONSTRAINT FK_PaymentMethods_TO_Transactions
+    FOREIGN KEY (method_id) REFERENCES PaymentMethods (method_id)
+GO
+
+ALTER TABLE Transactions
+  ADD CONSTRAINT FK_Investors_TO_Transactions
+    FOREIGN KEY (investor_id) REFERENCES Investors (investor_id)
+GO
+
+ALTER TABLE Startup_founders
+  ADD CONSTRAINT FK_Startups_TO_Startup_founders
+    FOREIGN KEY (startup_id) REFERENCES Startups (startup_id)
+GO
+
+ALTER TABLE Startup_founders
+  ADD CONSTRAINT FK_Founders_TO_Startup_founders
+    FOREIGN KEY (founder_id) REFERENCES Founders (founder_id)
+GO
+
+ALTER TABLE Campaign_Investor
+  ADD CONSTRAINT FK_FundingCampaigns_TO_Campaign_Investor
+    FOREIGN KEY (campaign_id) REFERENCES FundingCampaigns (campaign_id)
+GO
+
+ALTER TABLE Campaign_Investor
+  ADD CONSTRAINT FK_Investors_TO_Campaign_Investor
+    FOREIGN KEY (investor_id) REFERENCES Investors (investor_id)
+GO
+
+ALTER TABLE Campaign_Tag
+  ADD CONSTRAINT FK_FundingCampaigns_TO_Campaign_Tag
+    FOREIGN KEY (campaign_id) REFERENCES FundingCampaigns (campaign_id)
+GO
+
+ALTER TABLE Campaign_Tag
+  ADD CONSTRAINT FK_Tags_TO_Campaign_Tag
+    FOREIGN KEY (tag_id) REFERENCES Tags (tag_id)
+GO
