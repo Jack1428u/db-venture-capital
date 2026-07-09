@@ -1,4 +1,4 @@
-💡 ¿Qué es NovaSeed?
+¿Qué es NovaSeed?
 
 NovaSeed es una plataforma fintech peruana que democratiza el acceso al capital semilla
 . Conectamos startups tecnológicas en etapa inicial con inversores individuales, permitiendo la compraventa segura y estructurada de fracciones de participación empresarial (equity)
@@ -38,3 +38,28 @@ Justificación: Destaca por su flexibilidad de esquemas BSON y escalabilidad hor
 
 Se aplican patrones de diseño Embedded (embebido) y Subset (subconjunto) para reducir latencia y evitar uniones (joins) costosas
 .
+
+
+## Integrantes
+
+- Llontop Loro, Jhon Andersson  
+
+- Molleda Vasquez, Jeremy Cash 
+
+- Utrilla Fernández, Jack Gonzalo 
+ 
+- Vilchez Valencia, Luis Angel 
+
+- Yataco Vigo, Rodrigo David 
+
+ 
+
+
+## Como usar el repositorio
+
+
+### Base de datos relacional (SQL Server)
+| Carpeta | Descripción |
+|---|---|
+| `scripts_sql` | Scripts de carga y creación del modelo de datos relacional |
+| `scripts_sql` | Scripts de creación y carga de datos del modelo no relacional |
