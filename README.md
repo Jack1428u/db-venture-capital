@@ -58,7 +58,7 @@ Se aplican patrones de diseño Embedded (embebido) y Subset (subconjunto) para r
 ## Como usar el repositorio
 
 
-### Base de datos relacional (SQL Server)
+### Organización de carpetas
 | Carpeta | Descripción |
 |---|---|
 | `scripts_sql` | Scripts de carga y creación del modelo de datos relacional |
